@@ -124,10 +124,11 @@ const typeDefs = `
   }
 
   type Author {
-    name: String!
-    born: Int
-    id: ID!
-  }
+  name: String!
+  born: Int
+  id: ID!
+  bookCount: Int
+}
 
   type Book {
     title: String!
@@ -160,6 +161,11 @@ const typeDefs = `
 `
 
 const resolvers = {
+  Author: {
+    bookCount: async (parent) => {
+      return await Book.countDocuments({ author: parent._id })
+    }
+  },
   Query: {
     bookCount: async () => Book.countDocuments(),
     authorCount: async () => Author.countDocuments(),
